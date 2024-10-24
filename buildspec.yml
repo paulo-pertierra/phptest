@@ -1,0 +1,44 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing dependencies...
+      # Install Composer
+      - curl -sS https://getcomposer.org/installer | php
+      - mv composer.phar /usr/local/bin/composer
+      - echo Dependencies installed.
+
+  pre_build:
+    commands:
+      - echo Pre-build phase started...
+      # Install Composer dependencies
+      - composer install --prefer-dist --no-dev --no-interaction
+      # Copy .env and generate app key
+      - cp .env.example .env
+      - php artisan key:generate
+      - echo Pre-build phase completed.
+      
+  build:
+    commands:
+      - echo Build started...
+      # Cache config and routes
+      - php artisan config:cache
+      - php artisan route:cache
+      - echo Build completed.
+      
+  post_build:
+    commands:
+      - echo Post-build phase started...
+      # Run database migrations
+      - php artisan migrate --force
+      - echo Post-build phase completed.
+
+artifacts:
+  files:
+    - './**/*'
+
+cache:
+  paths:
+    - vendor/**/*
+    - node_modules/**/*
