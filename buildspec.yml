@@ -34,7 +34,15 @@ phases:
 
 artifacts:
   files:
-    - './**/*'
+    - vendor/**
+    - public/**
+    - resources/**
+    - routes/**
+    - config/**
+    - database/**
+    - bootstrap/**
+    - storage/**
+    - .env
 
 cache:
   paths:
