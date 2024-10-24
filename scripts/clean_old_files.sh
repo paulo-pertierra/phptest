@@ -1,0 +1,1 @@
+echo "cleaning old files"
